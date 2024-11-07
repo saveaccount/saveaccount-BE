@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -40,10 +43,18 @@ public class User extends BaseEntity{
     @Column
     private int gameLife;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Gifticon_relation> gifticons = new ArrayList<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Milage milage;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Statement> statements = new ArrayList<>();
+
     @Builder
-    public User(Long id, String username, String password, String name,
+    public User(String username, String password, String name,
                 String email, String phone, int age, Gender gender, int gameLife) {
-        this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
