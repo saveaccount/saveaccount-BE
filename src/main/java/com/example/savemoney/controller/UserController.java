@@ -28,6 +28,7 @@ public class UserController {
 
     }
 
+
     //username정보로 User의 모든 정보를 가져오는 API
     @GetMapping("")
     public ResponseEntity<?> getUserInfo() { //파라미터 필요없음(로그인된거로)

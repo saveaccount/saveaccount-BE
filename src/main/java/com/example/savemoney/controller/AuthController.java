@@ -27,6 +27,7 @@ public class AuthController {
 
     @GetMapping("/")
     public String test() {
+        //로그인한 사람의 username 가져오기
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         return "로그인한 사람: "+ name;
     }
