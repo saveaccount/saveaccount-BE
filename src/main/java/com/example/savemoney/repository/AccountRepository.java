@@ -1,7 +1,6 @@
 package com.example.savemoney.repository;
 
 import com.example.savemoney.entity.Account;
-import com.example.savemoney.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
@@ -11,5 +10,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     List<Account> findByUser_Username(String username);
 
     // 2. 다른 필요한 메서드들
-    Account findByAccountNum(String accountNum);
+    Account findByAccountNum(String account_num);
 }
