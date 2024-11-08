@@ -29,6 +29,7 @@ public class AuthService {
                     .phone(user.getPhone())
                     .gender(user.getGender())
                     .gameLife(5)
+                    .monthlySpendLimit(500000)
                     .build();
 
             userRepository.save(newUser);

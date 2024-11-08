@@ -43,6 +43,9 @@ public class User extends BaseEntity{
     @Column
     private int gameLife;
 
+    @Column
+    private int monthlySpendLimit;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Gifticon_relation> gifticons = new ArrayList<>();
 
@@ -54,7 +57,7 @@ public class User extends BaseEntity{
 
     @Builder
     public User(String username, String password, String name,
-                String email, String phone, int age, Gender gender, int gameLife) {
+                String email, String phone, int age, Gender gender, int gameLife, int monthlySpendLimit) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -63,6 +66,7 @@ public class User extends BaseEntity{
         this.age = age;
         this.gender = gender;
         this.gameLife = gameLife;
+        this.monthlySpendLimit = monthlySpendLimit;
     }
 
 
