@@ -4,6 +4,7 @@ import com.example.savemoney.enumeration.AccountType;
 import com.example.savemoney.enumeration.BankType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +24,7 @@ public class Account extends BaseEntity{
     @JoinColumn(name = "username")
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String account_num;
 
     @Column(nullable = false)
@@ -40,4 +41,14 @@ public class Account extends BaseEntity{
 
     @OneToMany(mappedBy = "senderAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Statement> statements=new ArrayList<>();
+
+    @Builder
+    public Account(User user, String account_num, AccountType type, String pw, BankType bank, int balance) {
+        this.user = user;
+        this.account_num = account_num;
+        this.type = type;
+        this.pw = pw;
+        this.bank = bank;
+        this.balance = balance;
+    }
 }
