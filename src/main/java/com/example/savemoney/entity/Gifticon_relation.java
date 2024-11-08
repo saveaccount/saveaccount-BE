@@ -2,6 +2,7 @@ package com.example.savemoney.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,10 @@ public class Gifticon_relation extends BaseEntity{
     @OneToOne
     @JoinColumn(name = "gifticon_id")
     private Gifticon_Info gifticon;
+
+    @Builder
+    public Gifticon_relation(User user, Gifticon_Info gifticon) {
+        this.user = user;
+        this.gifticon = gifticon;
+    }
 }

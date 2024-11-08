@@ -1,10 +1,7 @@
 package com.example.savemoney.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -19,9 +16,15 @@ public class Gifticon_Info extends BaseEntity{
     @Column(nullable = false)
     private byte[] gifticon_image;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String code;
 
     @OneToOne(mappedBy = "gifticon", cascade = CascadeType.ALL, orphanRemoval = true)
     private Gifticon_relation gifticon;
+
+    @Builder
+    public Gifticon_Info(byte[] gifticon_image, String code) {
+        this.gifticon_image = gifticon_image;
+        this.code = code;
+    }
 }
