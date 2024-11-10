@@ -65,5 +65,13 @@ public class User extends BaseEntity{
         this.gameLife = gameLife;
     }
 
-
+    // 특정 필드를 한 번에 업데이트하는 전용 메서드
+    public void updateUserInfo(String email, String password, String name, Gender gender, Integer age, String phone) {
+        if (email != null) this.email = email;
+        if (password != null) this.password = password;
+        if (name != null) this.name = name;
+        if (gender != null) this.gender = gender;
+        if (age != null) this.age = age;
+        if (phone != null) this.phone = phone;
+    }
 }

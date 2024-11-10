@@ -2,6 +2,7 @@ package com.example.savemoney.controller;
 
 
 import com.example.savemoney.dto.UserResponseDTO;
+import com.example.savemoney.dto.UserUpdateDTO;
 import com.example.savemoney.entity.User;
 import com.example.savemoney.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +47,7 @@ public class UserController {
         return new ResponseEntity<>(new UserResponseDTO(user), HttpStatus.OK); //UserResponseDTO UserDTO로 이름 변경
     }
 
+    //회원탈퇴
     @DeleteMapping("")
     public ResponseEntity<?> deleteUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -60,4 +62,24 @@ public class UserController {
             return new ResponseEntity<>("삭제 실패", HttpStatus.NOT_FOUND);
         }
     }
+
+    //회원정보 수정
+    @PutMapping("")
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateDTO userUpdateDTO){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if (username == null || username.isEmpty()) {
+            return new ResponseEntity<>("로그인 정보가 없습니다.", HttpStatus.UNAUTHORIZED);
+        }
+
+        try{
+            User updatedUser = userService.updateUser(username, userUpdateDTO);
+            return new ResponseEntity<>(new UserResponseDTO(updatedUser), HttpStatus.OK);
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>("회원 정보 수정 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
