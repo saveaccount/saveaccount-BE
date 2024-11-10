@@ -97,69 +97,69 @@ public class StatementService {
                 .collect(Collectors.toList());
     }
 
-    // 3. 이체 내역 분석 (일별/주간별/월별/분류별)
-    @Transactional
-    public List<StatementResponseDto> getAnalysisStatements(String userId, String period, String category, String date) {
-        // 날짜 필터링
-        LocalDate filterDate = (date != null) ? LocalDate.parse(date, DateTimeFormatter.ISO_DATE) : null;
-        List<Statement> statements;
+//    // 3. 이체 내역 분석 (일별/주간별/월별/분류별)
+//    @Transactional
+//    public List<StatementResponseDto> getAnalysisStatements(String userId, String period, String category, String date) {
+//        // 날짜 필터링
+//        LocalDate filterDate = (date != null) ? LocalDate.parse(date, DateTimeFormatter.ISO_DATE) : null;
+//        List<Statement> statements;
+//
+//        // 조건에 맞는 이체 내역 조회
+//        if ("daily".equals(period)) {
+//            statements = getDailyStatements(userId, filterDate);
+//        } else if ("weekly".equals(period)) {
+//            statements = getWeeklyStatements(userId, filterDate);
+//        } else if ("monthly".equals(period)) {
+//            statements = getMonthlyStatements(userId);
+//        } else if ("category".equals(period)) {
+//            statements = getCategoryStatements(userId, category);
+//        } else {
+//            throw new IllegalArgumentException("Invalid period specified");
+//        }
+//
+//        // DTO로 변환
+//        return statements.stream()
+//                .map(statement -> new StatementResponseDto(
+//                        statement.getMemo(),
+//                        statement.getStatementType(),
+//                        statement.getExpenseType(),
+//                        statement.getAmount(),
+//                        statement.getSenderAccount().getBalance(),
+//                        statement.getReceiverAccount().getBalance()
+//                ))
+//                .collect(Collectors.toList());
+//    }
 
-        // 조건에 맞는 이체 내역 조회
-        if ("daily".equals(period)) {
-            statements = getDailyStatements(userId, filterDate);
-        } else if ("weekly".equals(period)) {
-            statements = getWeeklyStatements(userId, filterDate);
-        } else if ("monthly".equals(period)) {
-            statements = getMonthlyStatements(userId);
-        } else if ("category".equals(period)) {
-            statements = getCategoryStatements(userId, category);
-        } else {
-            throw new IllegalArgumentException("Invalid period specified");
-        }
+//    private List<Statement> getDailyStatements(String userId, LocalDate filterDate) {
+//        // 필터링된 날짜로 일별 이체 내역 조회
+//        if (filterDate != null) {
+//            return statementRepository.findByUser_UsernameAndDate(userId, filterDate);
+//        }
+//        return statementRepository.findByUser_UsernameAndDateBetween(userId, filterDate.minusDays(30), filterDate);
+//    }
 
-        // DTO로 변환
-        return statements.stream()
-                .map(statement -> new StatementResponseDto(
-                        statement.getMemo(),
-                        statement.getStatementType(),
-                        statement.getExpenseType(),
-                        statement.getAmount(),
-                        statement.getSenderAccount().getBalance(),
-                        statement.getReceiverAccount().getBalance()
-                ))
-                .collect(Collectors.toList());
-    }
-
-    private List<Statement> getDailyStatements(String userId, LocalDate filterDate) {
-        // 필터링된 날짜로 일별 이체 내역 조회
-        if (filterDate != null) {
-            return statementRepository.findByUser_UsernameAndDate(userId, filterDate);
-        }
-        return statementRepository.findByUser_UsernameAndDateBetween(userId, filterDate.minusDays(30), filterDate);
-    }
-
-    private List<Statement> getWeeklyStatements(String userId, LocalDate filterDate) {
-        // 주간별로 이체 내역 조회
-        if (filterDate != null) {
-            return statementRepository.findByUser_UsernameAndWeek(userId, filterDate);
-        }
-        return statementRepository.findByUser_UsernameAndDateBetween(userId, LocalDate.now().minusWeeks(1), LocalDate.now());
-    }
-
-    // 월별 이체 내역을 가져오는 메서드
-    public List<Statement> getMonthlyStatements(String userId) {
-        // 현재 날짜를 기준으로 월별 시작과 종료 날짜를 계산
-        LocalDate now = LocalDate.now();
-        LocalDate startOfMonth = now.withDayOfMonth(1);  // 이번 달 첫 날
-        LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth());  // 이번 달 마지막 날
-
-        // userId에 맞는 사용자 계좌의 이체 내역을 조회하여 반환
-        return statementRepository.findByUser_UsernameAndDateBetween(userId, startOfMonth, endOfMonth);
-    }
-    private List<Statement> getCategoryStatements(String userId, String category) {
-        // 분류별 이체 내역 조회
-        ExpenseType expenseType = ExpenseType.valueOf(category.toUpperCase());
-        return statementRepository.findByUser_UsernameAndExpenseType(userId, expenseType);
-    }
+//    private List<Statement> getWeeklyStatements(String userId, LocalDate filterDate) {
+//        // 주간별로 이체 내역 조회
+//        if (filterDate != null) {
+//            return statementRepository.findByUser_UsernameAndWeek(userId, filterDate);
+//        }
+//        return statementRepository.findByUser_UsernameAndDateBetween(userId, LocalDate.now().minusWeeks(1), LocalDate.now());
+//    }
+//
+//    // 월별 이체 내역을 가져오는 메서드
+//    public List<Statement> getMonthlyStatements(String userId) {
+//        // 현재 날짜를 기준으로 월별 시작과 종료 날짜를 계산
+//        LocalDate now = LocalDate.now();
+//        LocalDate startOfMonth = now.withDayOfMonth(1);  // 이번 달 첫 날
+//        LocalDate endOfMonth = now.withDayOfMonth(now.lengthOfMonth());  // 이번 달 마지막 날
+//
+//        // userId에 맞는 사용자 계좌의 이체 내역을 조회하여 반환
+//        return statementRepository.findByUser_UsernameAndDateBetween(userId, startOfMonth, endOfMonth);
+//    }
+//    private List<Statement> getCategoryStatements(String userId, String category) {
+//        // 분류별 이체 내역 조회
+//        ExpenseType expenseType = ExpenseType.valueOf(category.toUpperCase());
+//        return statementRepository.findByUser_UsernameAndExpenseType(userId, expenseType);
+//    }
 
 }

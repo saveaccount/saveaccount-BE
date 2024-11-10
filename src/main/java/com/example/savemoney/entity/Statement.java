@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,6 +30,19 @@ public class Statement extends BaseEntity{
 
     @Column(nullable = false)
     private int amount;
+
+    // 송금 내역 발생 날짜
+    @Column(nullable = false)
+    private LocalDate date;
+
+//    // 주 시작일과 종료일 추가 (주간 송금 내역을 조회할 때 사용)
+//    @Column(nullable = false)
+//    private LocalDate weekStartDate;
+//
+//    @Column(nullable = false)
+//    private LocalDate weekEndDate;
+//    @Column(nullable = false)
+//    private Integer week;
 
     @ManyToOne
     @JoinColumn(name = "username")

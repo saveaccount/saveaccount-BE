@@ -36,16 +36,16 @@ public class StatementController {
         return statementService.getAccountStatements(userId, accountId);
     }
 
-    // 3. 이체 내역 분석 (일별/주간별/월별/분류별)
-    @GetMapping("/analysis")
-    public List<StatementResponseDto> getAnalysisStatements(
-            @RequestParam String userId,
-            @RequestParam String period, // "daily", "weekly", "monthly", "category"
-            @RequestParam(required = false) String category, // Optional, only used for category-based analysis
-            @RequestParam(required = false) String date // Optional, used for filtering by specific date (YYYY-MM-DD)
-    ) {
-        return statementService.getAnalysisStatements(userId, period, category, date);
-    }
+//    // 3. 이체 내역 분석 (일별/주간별/월별/분류별)
+//    @GetMapping("/analysis")
+//    public List<StatementResponseDto> getAnalysisStatements(
+//            @RequestParam String userId,
+//            @RequestParam String period, // "daily", "weekly", "monthly", "category"
+//            @RequestParam(required = false) String category, // Optional, only used for category-based analysis
+//            @RequestParam(required = false) String date // Optional, used for filtering by specific date (YYYY-MM-DD)
+//    ) {
+//        return statementService.getAnalysisStatements(userId, period, category, date);
+//    }
 
     // 4. 이체 내역 생성
     @PostMapping("/create")
