@@ -54,12 +54,11 @@ public class UserController {
         if (username == null || username.isEmpty()) {
             return new ResponseEntity<>("아이디를 입력해주세요.", HttpStatus.BAD_REQUEST);
         }
-
         boolean isDeleted = userService.deleteUser(username);
         if (isDeleted) {
-            return new ResponseEntity<>("삭제 성공", HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("삭제 실패", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
         }
     }
 
