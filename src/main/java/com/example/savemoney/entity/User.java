@@ -55,6 +55,9 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Statement> statements = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Account> accounts = new ArrayList<>();
+
     @Builder
     public User(String username, String password, String name,
                 String email, String phone, int age, Gender gender, int gameLife, int monthlySpendLimit) {
