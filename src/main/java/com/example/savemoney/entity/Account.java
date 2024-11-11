@@ -51,4 +51,17 @@ public class Account extends BaseEntity{
         this.bank = bank;
         this.balance = balance;
     }
+
+    // 잔액 증가 메서드
+    public void deposit(int amount) {
+        this.balance += amount;
+    }
+
+    // 잔액 감소 메서드
+    public void withdraw(int amount) {
+        if (this.balance < amount) {
+            throw new IllegalArgumentException("잔액이 부족합니다.");
+        }
+        this.balance -= amount;
+    }
 }
