@@ -42,13 +42,14 @@ public class Statement extends BaseEntity{
     private Account receiverAccount;
 
     @Builder
-    public Statement(String memo, StatementType statementType, ExpenseType expenseType, int amount, Account senderAccount, Account receiverAccount) {
+    public Statement(String memo, StatementType statementType, ExpenseType expenseType, int amount, Account senderAccount, Account receiverAccount, User user) {
         this.memo = memo;
         this.statementType = statementType;
         this.expenseType = expenseType;
         this.amount = amount;
         this.senderAccount = senderAccount;
         this.receiverAccount = receiverAccount;
+        this.user = user;
     }
 
 
