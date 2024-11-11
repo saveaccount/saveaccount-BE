@@ -1,6 +1,5 @@
 package com.example.savemoney.service;
 
-import com.example.savemoney.dto.SigninDTO;
 import com.example.savemoney.dto.SignupDTO;
 import com.example.savemoney.entity.User;
 import com.example.savemoney.repository.UserRepository;

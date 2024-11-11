@@ -1,6 +1,5 @@
 package com.example.savemoney.controller;
 
-import com.example.savemoney.dto.SigninDTO;
 import com.example.savemoney.dto.SignupDTO;
 import com.example.savemoney.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ public class AuthController {
         return new ResponseEntity<>("회원 가입 성공", HttpStatus.CREATED);
     }
 
-    @GetMapping("/")
+    @PostMapping("/")
     public String test() {
         //로그인한 사람의 username 가져오기
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
