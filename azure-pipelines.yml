@@ -2,24 +2,20 @@ trigger:
 - main
 
 pool:
-  name: 'self-hosted'
+  vmImage: 'ubuntu-latest'
 
-steps:
-- task: JavaToolInstaller@0
-  inputs:
-    versionSpec: '17'
-    jdkArchitectureOption: 'x64'
-    jdkSourceOption: 'Install'     # 'PreInstalled' 대신 'Install' 사용
-    jdkFile: 'https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz'    # JDK 다운로드 URL
-    cleanDestinationDirectory: true
-
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'build'
-    options: '-Xmx3072m' 
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '17'
-    jdkArchitectureOption: 'x64'
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - task: Gradle@3
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        tasks: 'build'
+        options: '-Xmx3072m' 
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '17'
+        jdkArchitectureOption: 'x64'
