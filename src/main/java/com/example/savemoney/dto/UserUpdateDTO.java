@@ -17,4 +17,5 @@ public class UserUpdateDTO {
     private Gender gender;
     private int age;
     private String phone;
+    private int monthlySpendLimit;
 }

@@ -81,4 +81,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("/monthly-spend-limit")
+    public ResponseEntity<?> getMonthlySpendLimit(@RequestParam String username) {
+        if (username == null) {
+            return new ResponseEntity<>("아이디를 입력해주세요.", HttpStatus.BAD_REQUEST);
+        } else {
+            Integer monthlySpendLimit = userService.getMonthlySpendLimit(username);
+            return new ResponseEntity<>(monthlySpendLimit, HttpStatus.OK);
+        }
+    }
+
 }

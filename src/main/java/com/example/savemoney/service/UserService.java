@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final SpendingAdjustmentService spendingAdjustmentService;
+
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder; //BCryptPasswordEncoder를 사용하여 비밀번호 암호화
 
@@ -64,8 +66,25 @@ public class UserService {
                 userUpdateDTO.getName(),
                 userUpdateDTO.getGender(),
                 userUpdateDTO.getAge(),
-                userUpdateDTO.getPhone()
+                userUpdateDTO.getPhone(),
+                userUpdateDTO.getMonthlySpendLimit()
         );
         return user; //트랜잭션이 끝나면 변경사항이 자동으로 커밋
+    }
+
+    public Integer getMonthlySpendLimit(String username) {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        // Adjust the monthly spending limit before returning it
+        spendingAdjustmentService.adjustMonthlySpendLimit(user);
+
+        // Save the updated user to persist the adjusted limit
+        userRepository.save(user);
+
+        return user.getMonthlySpendLimit();
     }
 }
