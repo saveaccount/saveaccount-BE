@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Milage extends BaseEntity{
+public class Mileage extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +20,22 @@ public class Milage extends BaseEntity{
     private User user;
 
     @Column(nullable = false)
-    private int balance;
+    private int balance = 0;
+
+    @Column(nullable = false)
+    private int ticketCount = 0;
 
     @Builder
-    public Milage(User user, int balance) {
+    public Mileage(User user, int balance, int ticketCount) {
         this.user = user;
         this.balance = balance;
+        this.ticketCount = ticketCount;
+    }
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
+
+    public void setTicketCount(int ticketCount) {
+        this.ticketCount = ticketCount;
     }
 }

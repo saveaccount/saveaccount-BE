@@ -50,7 +50,7 @@ public class User extends BaseEntity{
     private List<Gifticon_relation> gifticons = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Milage milage;
+    private Mileage mileage;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Statement> statements = new ArrayList<>();
