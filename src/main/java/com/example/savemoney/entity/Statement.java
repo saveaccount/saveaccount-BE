@@ -23,7 +23,7 @@ public class Statement extends BaseEntity{
     @Column(nullable = false)
     private StatementType statementType;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private ExpenseType expenseType;
 
     @Column(nullable = false)

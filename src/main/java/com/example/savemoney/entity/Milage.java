@@ -27,4 +27,8 @@ public class Milage extends BaseEntity{
         this.user = user;
         this.balance = balance;
     }
+
+    public void updateBalance(int balance) {
+        this.balance += balance;
+    }
 }

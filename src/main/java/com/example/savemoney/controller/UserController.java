@@ -81,4 +81,12 @@ public class UserController {
         }
     }
 
+    @GetMapping("/monthly-spend-limit")
+    public ResponseEntity<?> getMonthlySpendLimit() {
+
+        Integer monthlySpendLimit = userService.getMonthlySpendLimit();
+        return new ResponseEntity<>(monthlySpendLimit, HttpStatus.OK);
+
+    }
+
 }
