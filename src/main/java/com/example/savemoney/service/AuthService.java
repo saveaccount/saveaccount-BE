@@ -1,7 +1,9 @@
 package com.example.savemoney.service;
 
 import com.example.savemoney.dto.SignupDTO;
+import com.example.savemoney.entity.Milage;
 import com.example.savemoney.entity.User;
+import com.example.savemoney.repository.MilageRepository;
 import com.example.savemoney.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +16,8 @@ public class AuthService {
     private final UserRepository userRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final MilageRepository milageRepository;
 
     public boolean signup(SignupDTO user) {
         boolean isExists = userRepository.existsByUsername(user.getUsername());
@@ -32,12 +36,19 @@ public class AuthService {
                     .build();
 
             userRepository.save(newUser);
+
+            // 유저 마일리지 지갑 생성
+            Milage milage= Milage.builder()
+                    .balance(0)
+                    .user(newUser)
+                    .build();
+
+            milageRepository.save(milage);
+
             return true;
         }
         return false;
     }
 
-//    public boolean signin(SigninDTO user) {
-//
-//    }
+
 }
