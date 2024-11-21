@@ -11,7 +11,17 @@ steps:
     java -version
   displayName: 'Set up JDK 17'
 
+- script: chmod +x ./gradlew
+  displayName: 'Set executable permission for gradlew'
 
+- script: java -version
+  displayName: 'Check Java version'
+
+- script: ./gradlew --version
+  displayName: 'Check Gradle version'
+
+- script: ./gradlew clean
+  displayName: 'Clean Gradle build'
 
 - task: Gradle@3
   inputs:
@@ -19,11 +29,8 @@ steps:
     tasks: 'build'                    # 실행할 Gradle 태스크
     options: '--info --stacktrace --no-daemon'
     publishJUnitResults: true
-    testResultsFiles: '**/build/test-results/**/*.xml'
-    javaHomeOption: 'JDKVersion'      # JDK 버전 사용을 지정
-    jdkVersionOption: '17'            # 사용할 JDK 버전
-    jdkArchitectureOption: 'x64'      # JDK 아키텍처 설정
-  env:
-    SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/savemoney
-    SPRING_DATASOURCE_USERNAME: root
-    SPRING_DATASOURCE_PASSWORD: 2501
+    # testResultsFiles: '**/build/test-results/**/*.xml'
+    # javaHomeOption: 'JDKVersion'      # JDK 버전 사용을 지정
+    # jdkVersionOption: '17'            # 사용할 JDK 버전
+    # jdkArchitectureOption: 'x64'      # JDK 아키텍처 설정
+ 
