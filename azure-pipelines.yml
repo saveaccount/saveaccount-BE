@@ -28,15 +28,19 @@ steps:
     echo "JAVA_HOME is set to $JAVA_HOME"
     ./gradlew --version
   displayName: 'Verify Gradle uses correct Java'
+  
+- script: |
+    ./gradlew --stop
+  displayName: 'Stop Gradle daemon'
 
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'       # Gradle wrapper 파일 경로
     tasks: 'build'                    # 실행할 Gradle 태스크
     options: '--info --stacktrace --no-daemon'
+
+    javaHomeOption: 'Path'      # JDK 버전 사용을 지정
+    javaHome: '/usr/lib/jvm/java-17-openjdk-amd64'
     publishJUnitResults: true
-    # testResultsFiles: '**/build/test-results/**/*.xml'
-    # javaHomeOption: 'JDKVersion'      # JDK 버전 사용을 지정
-    # jdkVersionOption: '17'            # 사용할 JDK 버전
-    # jdkArchitectureOption: 'x64'      # JDK 아키텍처 설정
+    testResultsFiles: '**/build/test-results/**/*.xml'
  
