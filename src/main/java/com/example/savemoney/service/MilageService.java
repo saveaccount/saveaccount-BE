@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -30,15 +32,9 @@ public class MilageService {
 
     private final UserRepository userRepository;
 
-    private final AccountRepository accountRepository;
 
-    /**
-     *
-     * @param amount
-     * @return 입금 후 잔액
-     */
     @Transactional
-    public int putMilageIn(int amount) {
+    public int putMilageIn() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // 사용자 조회
@@ -47,6 +43,23 @@ public class MilageService {
         if (user == null) {
             throw new IllegalArgumentException("존재하지 않는 사용자입니다");
         }
+
+        // 사용자의 목표 지출 금액 조회
+        int monthlySpendLimit = user.getMonthlySpendLimit();
+
+        // 사용자의 월 지출 금액 조회
+        LocalDateTime oneMonthAgo = LocalDateTime.now().minus(1, ChronoUnit.MONTHS);
+        int monthlySpend = statementRepository.calculateMonthlySpend(user.getId(), oneMonthAgo);
+
+        // 목표 지출 금액 달성 여부 확인
+        if (monthlySpend >= monthlySpendLimit) {
+            throw new IllegalArgumentException("목표 지출 금액을 달성하지 못했습니다");
+        }
+
+        // 마일리지 적립 금액 계산
+        int amount = monthlySpendLimit - monthlySpend;
+
+        log.info("monthly spend limit : {}, monthly spend: {}, milage 적립: {}", monthlySpendLimit, monthlySpend, amount);
 
         // 마일리지 적립 로직
         Milage milage = milageRepository.findByUser(user);

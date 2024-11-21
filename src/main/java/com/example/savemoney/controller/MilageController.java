@@ -17,15 +17,10 @@ public class MilageController {
     private final MilageService milageService;
 
     @PatchMapping("/in")
-    public ResponseEntity<?> putMilageIn(int amount) {
-
-        // amount<=0일 경우
-        if (amount <= 0) {
-            return new ResponseEntity<>("0 이상의 값을 입력해주세요", HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> putMilageIn() {
 
         // 마일리지 입금
-        int milage = milageService.putMilageIn(amount);
+        int milage = milageService.putMilageIn();
 
         return new ResponseEntity<>("이체 내역 생성 완료, 이체 후 잔액" + milage, HttpStatus.OK);
     }
