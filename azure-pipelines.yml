@@ -5,12 +5,11 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: JavaToolInstaller@0
-  inputs:
-    version: '17'
-    jdkArchitecture: 'x64'
-    jdkSourceOption: 'PreInstalled'
-  displayName: 'Install Java 17'
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y openjdk-17-jdk
+    java -version
+  displayName: 'Set up JDK 17'
 
 
 
