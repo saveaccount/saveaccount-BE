@@ -87,4 +87,8 @@ public class User extends BaseEntity{
         this.monthlySpendLimit = monthlySpendLimit;
     }
 
+    public void updateGameLife(int gameLife) {
+        this.gameLife = gameLife;
+    }
+
 }

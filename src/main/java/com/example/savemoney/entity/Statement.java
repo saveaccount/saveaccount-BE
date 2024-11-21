@@ -3,21 +3,19 @@ package com.example.savemoney.entity;
 import com.example.savemoney.enumeration.ExpenseType;
 import com.example.savemoney.enumeration.StatementType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Statement extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String memo;
 
     @Column(nullable = false)

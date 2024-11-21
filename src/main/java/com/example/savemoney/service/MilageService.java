@@ -91,7 +91,7 @@ public class MilageService {
 
         // statement 저장
         statementRepository.save(statement);
-        log.info("Statement 저장 완료");
+        log.info("statement : {}", statement.toString());
         // 입금 후 잔액 반환
         int afterBalance = milageRepository.getMilage(user);
         log.info("마일리지 잔액 : {}", afterBalance);
