@@ -48,8 +48,24 @@ public class MilageService {
         int monthlySpendLimit = user.getMonthlySpendLimit();
 
         // 사용자의 월 지출 금액 조회
-        LocalDateTime oneMonthAgo = LocalDateTime.now().minus(1, ChronoUnit.MONTHS);
-        int monthlySpend = statementRepository.calculateMonthlySpend(user.getId(), oneMonthAgo);
+        LocalDateTime firstDayOfLastMonth = LocalDateTime.now()
+                .minus(1, ChronoUnit.MONTHS)
+                .withDayOfMonth(1)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0);
+
+        LocalDateTime lastDayOfLastMonth = LocalDateTime.now()
+                .withDayOfMonth(1)
+                .withHour(0)
+                .withMinute(0)
+                .minus(1, ChronoUnit.DAYS)
+                .withHour(23)
+                .withMinute(59)
+                .withSecond(59);
+
+        log.info("firstDayOfLastMonth : {}, lastDayOfLastMonth : {}", firstDayOfLastMonth, lastDayOfLastMonth);
+        int monthlySpend = statementRepository.calculateMonthlySpend(user.getId(), firstDayOfLastMonth, lastDayOfLastMonth);
 
         // 목표 지출 금액 달성 여부 확인
         if (monthlySpend >= monthlySpendLimit) {

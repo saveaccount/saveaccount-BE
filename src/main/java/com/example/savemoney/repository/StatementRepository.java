@@ -14,7 +14,7 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
     List<Statement> findBySenderAccountId(Long accountId);
     List<Statement> findByReceiverAccountId(Long accountId);
 
-    @Query("SELECT COALESCE(SUM(s.amount), 0) FROM Statement s WHERE s.user.id = :userId AND s.createdAt >= :oneMonthAgo AND s.statementType=0")
-    int calculateMonthlySpend(@Param("userId") Long userId, @Param("oneMonthAgo") LocalDateTime oneMonthAgo);
+    @Query("SELECT COALESCE(SUM(s.amount), 0) FROM Statement s WHERE s.user.id = :userId AND s.createdAt >= :firstDayOfLastMonth AND s.createdAt <= :lastDayOfLastMonth AND s.statementType=0")
+    int calculateMonthlySpend(@Param("userId") Long userId, LocalDateTime firstDayOfLastMonth, LocalDateTime lastDayOfLastMonth);
 
 }

@@ -90,9 +90,24 @@ public class UserService {
         // Adjust the monthly spending limit before returning it
         int newLimit=0;
         // Step 1: Calculate the total amount spent in the past month
-        LocalDateTime oneMonthAgo = LocalDateTime.now().minus(1, ChronoUnit.MONTHS);
+        // 사용자의 월 지출 금액 조회
+        LocalDateTime firstDayOfLastMonth = LocalDateTime.now()
+                .minus(1, ChronoUnit.MONTHS)
+                .withDayOfMonth(1)
+                .withHour(0)
+                .withMinute(0)
+                .withSecond(0);
 
-        int monthlySpend = statementRepository.calculateMonthlySpend(user.getId(), oneMonthAgo);
+        LocalDateTime lastDayOfLastMonth = LocalDateTime.now()
+                .withDayOfMonth(1)
+                .withHour(0)
+                .withMinute(0)
+                .minus(1, ChronoUnit.DAYS)
+                .withHour(23)
+                .withMinute(59)
+                .withSecond(59);
+
+        int monthlySpend = statementRepository.calculateMonthlySpend(user.getId(), firstDayOfLastMonth, lastDayOfLastMonth);
 
         // Step 2: Determine adjustment rate and target limit based on spend amount
         double adjustmentRate = 0.0;
