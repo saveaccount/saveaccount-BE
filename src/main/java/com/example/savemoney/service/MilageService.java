@@ -97,4 +97,15 @@ public class MilageService {
         log.info("마일리지 잔액 : {}", afterBalance);
         return afterBalance;
     }
+
+    public int getMilage() {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("존재하지 않는 사용자입니다");
+        }
+        int milage = milageRepository.getMilage(user);
+        return milage;
+    }
 }
