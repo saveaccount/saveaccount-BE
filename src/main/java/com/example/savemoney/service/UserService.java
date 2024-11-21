@@ -2,19 +2,28 @@ package com.example.savemoney.service;
 
 import com.example.savemoney.dto.UserUpdateDTO;
 import com.example.savemoney.entity.User;
+import com.example.savemoney.repository.StatementRepository;
 import com.example.savemoney.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder; //BCryptPasswordEncoder를 사용하여 비밀번호 암호화
+
+    private final StatementRepository statementRepository;
 
     public boolean checkId(String username) {
         boolean exists = userRepository.existsByUsername(username);
@@ -67,5 +76,48 @@ public class UserService {
                 userUpdateDTO.getPhone()
         );
         return user; //트랜잭션이 끝나면 변경사항이 자동으로 커밋
+    }
+
+    @Transactional
+    public Integer getMonthlySpendLimit() {
+
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+        // Adjust the monthly spending limit before returning it
+        int newLimit=0;
+        // Step 1: Calculate the total amount spent in the past month
+        LocalDateTime oneMonthAgo = LocalDateTime.now().minus(1, ChronoUnit.MONTHS);
+
+        int monthlySpend = statementRepository.calculateMonthlySpend(user.getId(), oneMonthAgo);
+
+        // Step 2: Determine adjustment rate and target limit based on spend amount
+        double adjustmentRate = 0.0;
+        int targetLimit = user.getMonthlySpendLimit();  // Current limit as a starting target
+        if (monthlySpend > 1000000) {
+            adjustmentRate = 0.05;
+            targetLimit = 700000;
+        } else if (monthlySpend > 700000) {
+            adjustmentRate = 0.04;
+            targetLimit = 500000;
+        } else if (monthlySpend > 500000) {
+            adjustmentRate = 0.03;
+            targetLimit = 400000;
+        }
+        else {
+            adjustmentRate = 0;
+            newLimit = 400000;
+        }
+        // Step 3: Adjust the monthly spending limit until reaching the target
+        if (adjustmentRate > 0) {
+            newLimit = (int) (user.getMonthlySpendLimit() * (1 - adjustmentRate));
+        }
+        log.info("Monthly spend: {}, target limit: {}, new limit: {}", monthlySpend, targetLimit, newLimit);
+        user.updateMonthlySpendLimit(Math.max(newLimit, targetLimit));
+
+        return user.getMonthlySpendLimit();
     }
 }

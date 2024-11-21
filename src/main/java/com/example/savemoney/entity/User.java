@@ -82,4 +82,9 @@ public class User extends BaseEntity{
         if (phone != null) this.phone = phone;
     }
 
+    // monthlySpendLimit 업데이트
+    public void updateMonthlySpendLimit(int monthlySpendLimit) {
+        this.monthlySpendLimit = monthlySpendLimit;
+    }
+
 }
