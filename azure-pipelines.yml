@@ -22,8 +22,12 @@ steps:
 - script: ./gradlew --version
   displayName: 'Check Gradle version'
 
-- script: ./gradlew clean
-  displayName: 'Clean Gradle build'
+- script: |
+    export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+    export PATH=$JAVA_HOME/bin:$PATH
+    echo "JAVA_HOME is set to $JAVA_HOME"
+    ./gradlew --version
+  displayName: 'Verify Gradle uses correct Java'
 
 - task: Gradle@3
   inputs:
