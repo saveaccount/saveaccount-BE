@@ -54,7 +54,7 @@ public class AccountService {
                 .type(accountType)
                 .pw(bCryptPasswordEncoder.encode(accountEnrollDTO.getPw()))
                 .bank(bankType)
-                .balance(0)
+                .balance(accountEnrollDTO.getBalance())
                 .build();
 
         //Account 저장
