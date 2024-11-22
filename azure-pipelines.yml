@@ -2,41 +2,51 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 steps:
 - script: |
-    sudo apt-get update
-    sudo apt-get install -y openjdk-17-jdk
-    sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
-    sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-    export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-    export PATH=$JAVA_HOME/bin:$PATH
-    echo "JAVA_HOME is set to $JAVA_HOME"
-    java -version
-  displayName: 'Set up JDK 17 and JAVA_HOME'
+    echo "Available Java versions:"
+    update-alternatives --list java
+  displayName: 'List installed Java versions'
 
-- task: Gradle@3
-  inputs:
-    gradleWrapperFile: 'gradlew'       # Gradle wrapper 파일 경로
-    tasks: 'build'                    # 실행할 Gradle 태스크
-    options: '--info --stacktrace --no-daemon'
-    javaHomeOption: 'Path'      # JDK 버전 사용을 지정
-    javaHome: '/usr/lib/jvm/java-17-openjdk-amd64'
-    publishJUnitResults: true
-    testResultsFiles: '**/build/test-results/**/*.xml'
-  env:
-    JAVA_HOME: '/usr/lib/jvm/java-17-openjdk-amd64'
-    PATH: '/usr/lib/jvm/java-17-openjdk-amd64/bin:$(PATH)'   
-# - task: Gradle@3
+
+
+
+# trigger:
+# - main
+
+# pool:
+#   vmImage: 'ubuntu-latest'
+
+  
+# variables:
+#   # Java 17 설정
+#   JAVA_HOME: '/usr/lib/jvm/java-17-openjdk-amd64'
+
+# steps:
+# - task: UseJavaVersion@1
 #   inputs:
-#     gradleWrapperFile: 'gradlew'       # Gradle wrapper 파일 경로
-#     tasks: 'build'                    # 실행할 Gradle 태스크
-#     options: '-Xmx3072m'
-#     publishJUnitResults: true
+#     version: '17'
+#     architecture: 'x64'
+#   displayName: 'Set up Java 17'
+
+# - script: |
+#     echo "Compiling Java files..."
+#     javac -cp .:junit-platform-console-standalone-1.10.0.jar \
+#           -d ./out ./src/test/java/com/example/*.java
+#   displayName: 'Compile JUnit Tests'
+
+# - script: |
+#     echo "Running JUnit tests..."
+#     java -jar junit-platform-console-standalone-1.10.0.jar \
+#          --class-path ./out \
+#          --scan-class-path
+#   displayName: 'Run JUnit Tests'
+
+# - task: PublishTestResults@2
+#   inputs:
+#     testResultsFormat: 'JUnit'
 #     testResultsFiles: '**/TEST-*.xml'
-#     javaHomeOption: 'JDKVersion'      # JDK 버전 사용을 지정
-#     jdkVersionOption: '17'
-#     jdkArchitectureOption: 'x64'
-    
- 
+#     failTaskOnFailedTests: true
+#   displayName: 'Publish Test Results'
