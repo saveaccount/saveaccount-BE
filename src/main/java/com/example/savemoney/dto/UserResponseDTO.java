@@ -17,7 +17,7 @@ public class UserResponseDTO {
     private String name;
     private String phone;
     private int age;
-    private Gender gender;
+    private int gender;
     private int gameLife;
     private int monthlySpendLimit;
 
@@ -29,7 +29,7 @@ public class UserResponseDTO {
         this.name = user.getName();
         this.phone = user.getPhone();
         this.age = user.getAge();
-        this.gender = user.getGender();
+        this.gender = user.getGender() != null ? user.getGender().ordinal() : -1;
         this.gameLife = user.getGameLife();
         this.monthlySpendLimit = user.getMonthlySpendLimit();
     }

@@ -1,5 +1,6 @@
 package com.example.savemoney.service;
 
+import com.example.savemoney.dto.AccountDTO;
 import com.example.savemoney.dto.AccountEnrollDTO;
 import com.example.savemoney.dto.TransferRequestDTO;
 import com.example.savemoney.dto.TransferResponseDTO;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +54,7 @@ public class AccountService {
                 .type(accountType)
                 .pw(bCryptPasswordEncoder.encode(accountEnrollDTO.getPw()))
                 .bank(bankType)
-                .balance(0)
+                .balance(accountEnrollDTO.getBalance())
                 .build();
 
         //Account 저장
@@ -90,12 +92,23 @@ public class AccountService {
         return true;
     }
 
-    public List<Account> getUserAccounts(String username){
+
+    public List<AccountDTO> getUserAccounts(String username) {
         User user = userRepository.findByUsername(username);
-        if(user == null){
+        if (user == null) {
             throw new IllegalArgumentException("존재하지 않는 사용자입니다");
         }
-        return accountRepository.findByUserId(user.getId());
+
+        return accountRepository.findByUserId(user.getId()).stream()
+                .map(account -> new AccountDTO(
+                        account.getId(),
+                        account.getAccount_num(),
+                        account.getType(),
+                        account.getBank(),
+                        account.getBalance(),
+                        user.getUsername()
+                ))
+                .collect(Collectors.toList());
     }
 
     public int getTotalBalance(String username){
@@ -128,21 +141,24 @@ public class AccountService {
         if(senderAccount.getBalance() < transferRequestDTO.getAmount()){
             throw new IllegalArgumentException("잔액이 부족합니다");
         }
-        senderAccount.withdraw(transferRequestDTO.getAmount());
 
         // 받는계좌 확인 및 잔액추가
         Account receiverAccount = accountRepository.findByAccount_num(transferRequestDTO.getReceiverAccountNum());
         if(receiverAccount == null){
             throw new IllegalArgumentException("받는 계좌가 존재하지 않는 계좌입니다");
         }
+        senderAccount.withdraw(transferRequestDTO.getAmount());
         receiverAccount.deposit(transferRequestDTO.getAmount());
 
+        // 수동 플러시 (Dirty Checking 보장)
+        accountRepository.save(senderAccount);
+        accountRepository.save(receiverAccount);
 
         // 이체 내역 생성 및 저장
         Statement statement = Statement.builder()
                 .memo("이체내역메모")
                 .statementType(StatementType.MONEY)
-                .expenseType(ExpenseType.CONVENIENCE)
+                .expenseType(transferRequestDTO.getCategory())
                 .amount(transferRequestDTO.getAmount())
                 .senderAccount(senderAccount)
                 .receiverAccount(receiverAccount)
@@ -166,8 +182,6 @@ public class AccountService {
 
 
     }
-
-
 
     // 모임 계좌의 호스트 여부 확인
     private boolean isHost(User user, Account account){
