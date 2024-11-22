@@ -59,7 +59,7 @@ public class SecurityConfig {
                                 corsConfiguration.setMaxAge(3600L);
 
                                 corsConfiguration.setExposedHeaders(Collections.singletonList("Authorization"));
-
+                                corsConfiguration.addExposedHeader("access");
                                 return corsConfiguration;
                             }
                         }));
@@ -78,7 +78,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/", "/auth/signup", "/login","/reissue").permitAll()
+                        .requestMatchers("/", "/auth/signup", "/login","/reissue", "/user/check-id").permitAll()
 //                        .requestMatchers("/admin").hasAnyRole("ADMIN")
                         .anyRequest().authenticated());
 
