@@ -5,52 +5,53 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-# - script: |
-#     sudo apt-get update
-#     sudo apt-get install -y openjdk-17-jdk
-#     sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
-#     sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-#     java -version
-#   displayName: 'Set up JDK 17'
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y openjdk-17-jdk
+    sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
+    sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+    java -version
+  displayName: 'Set up JDK 17'
 
-# - script: chmod +x ./gradlew
-#   displayName: 'Set executable permission for gradlew'
+- script: chmod +x ./gradlew
+  displayName: 'Set executable permission for gradlew'
 
-# - script: java -version
-#   displayName: 'Check Java version'
+- script: java -version
+  displayName: 'Check Java version'
 
-# - script: ./gradlew --version
-#   displayName: 'Check Gradle version'
+- script: ./gradlew --version
+  displayName: 'Check Gradle version'
 
-# - script: |
-#     export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-#     export PATH=$JAVA_HOME/bin:$PATH
-#     echo "JAVA_HOME is set to $JAVA_HOME"
-#     ./gradlew --version
-#   displayName: 'Verify Gradle uses correct Java'
+- script: |
+    export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+    export PATH=$JAVA_HOME/bin:$PATH
+    echo "JAVA_HOME is set to $JAVA_HOME"
+    ./gradlew --version
+  displayName: 'Verify Gradle uses correct Java'
   
-# - script: |
-#     ./gradlew --stop
-#   displayName: 'Stop Gradle daemon'
+- script: |
+    ./gradlew --stop
+  displayName: 'Stop Gradle daemon'
 
-# - task: Gradle@3
-#   inputs:
-#     gradleWrapperFile: 'gradlew'       # Gradle wrapper 파일 경로
-#     tasks: 'build'                    # 실행할 Gradle 태스크
-#     options: '--info --stacktrace --no-daemon'
-#     javaHomeOption: 'Path'      # JDK 버전 사용을 지정
-#     javaHome: '/usr/lib/jvm/java-17-openjdk-amd64'
-#     publishJUnitResults: true
-#     testResultsFiles: '**/build/test-results/**/*.xml'
 - task: Gradle@3
   inputs:
     gradleWrapperFile: 'gradlew'       # Gradle wrapper 파일 경로
     tasks: 'build'                    # 실행할 Gradle 태스크
-    options: '-Xmx3072m'
+    options: '--info --stacktrace --no-daemon'
+    javaHomeOption: 'Path'      # JDK 버전 사용을 지정
+    javaHome: '/usr/lib/jvm/java-17-openjdk-amd64'
     publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'      # JDK 버전 사용을 지정
-    jdkVersionOption: '17'
-    jdkArchitectureOption: 'x64'
+    testResultsFiles: '**/build/test-results/**/*.xml'
+    
+# - task: Gradle@3
+#   inputs:
+#     gradleWrapperFile: 'gradlew'       # Gradle wrapper 파일 경로
+#     tasks: 'build'                    # 실행할 Gradle 태스크
+#     options: '-Xmx3072m'
+#     publishJUnitResults: true
+#     testResultsFiles: '**/TEST-*.xml'
+#     javaHomeOption: 'JDKVersion'      # JDK 버전 사용을 지정
+#     jdkVersionOption: '17'
+#     jdkArchitectureOption: 'x64'
     
  
