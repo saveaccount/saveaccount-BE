@@ -10,28 +10,11 @@ steps:
     sudo apt-get install -y openjdk-17-jdk
     sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-17-openjdk-amd64/bin/java 1
     sudo update-alternatives --set java /usr/lib/jvm/java-17-openjdk-amd64/bin/java
-    java -version
-  displayName: 'Set up JDK 17'
-
-- script: chmod +x ./gradlew
-  displayName: 'Set executable permission for gradlew'
-
-- script: java -version
-  displayName: 'Check Java version'
-
-- script: ./gradlew --version
-  displayName: 'Check Gradle version'
-
-- script: |
     export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
     export PATH=$JAVA_HOME/bin:$PATH
     echo "JAVA_HOME is set to $JAVA_HOME"
-    ./gradlew --version
-  displayName: 'Verify Gradle uses correct Java'
-  
-- script: |
-    ./gradlew --stop
-  displayName: 'Stop Gradle daemon'
+    java -version
+  displayName: 'Set up JDK 17 and JAVA_HOME'
 
 - task: Gradle@3
   inputs:
