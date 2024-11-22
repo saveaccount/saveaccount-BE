@@ -74,8 +74,8 @@ public class AccountController {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
         try{
-            TransferResponseDTO response = accountService.transfer(transferRequestDTO, username);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            TransferResponseDTO statement = accountService.transfer(transferRequestDTO, username);
+            return new ResponseEntity<>(statement, HttpStatus.OK);
         }catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }catch (Exception e){
