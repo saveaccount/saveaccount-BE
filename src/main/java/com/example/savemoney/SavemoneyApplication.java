@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SavemoneyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SavemoneyApplication.class, args);
+        SpringApplication.run(SavemoneyApplication.class, args!);
     }
 
 }
