@@ -1,5 +1,6 @@
 package com.example.savemoney.service;
 
+import com.example.savemoney.dto.MilageStatementsDTO;
 import com.example.savemoney.dto.StatementResponseDTO;
 import com.example.savemoney.entity.Statement;
 import com.example.savemoney.entity.User;
@@ -166,4 +167,31 @@ public class StatementService {
         return result;
     }
 
+    public List<MilageStatementsDTO> getCurrentMilageStatement(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        List<MilageStatementsDTO> milageDTOs = new ArrayList<>();
+        List<Statement> milageStatements = statementRepository.findByUserAndStatementType(user, StatementType.MILEAGE);
+
+        // statement가 없을 경우 빈 리스트 반환
+        if(milageStatements == null){
+            return new ArrayList<>();
+        }
+
+        milageStatements.stream().forEach(statement -> {
+            milageDTOs.add(new MilageStatementsDTO(
+                    statement.getUser().getUsername(),
+                    statement.getAmount(),
+                    statement.getStatementType(),
+                    statement.getCreatedAt(),
+                    statement.getMemo()
+            ));
+        });
+
+
+        return milageDTOs;
+    }
 }

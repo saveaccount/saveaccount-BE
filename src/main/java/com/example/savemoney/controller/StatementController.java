@@ -1,5 +1,6 @@
 package com.example.savemoney.controller;
 
+import com.example.savemoney.dto.MilageStatementsDTO;
 import com.example.savemoney.dto.StatementResponseDTO;
 import com.example.savemoney.entity.Statement;
 import com.example.savemoney.service.StatementService;
@@ -60,5 +61,13 @@ public class StatementController {
         Map<String, Integer> response = new HashMap<>();
         response.put("totalSpent", totalSpent);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/milage")
+    public ResponseEntity<?> getCurrentMilageStatement() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<MilageStatementsDTO> milageStatements = statementService.getCurrentMilageStatement(username);
+
+        return new ResponseEntity<>(milageStatements, milageStatements.isEmpty() ? org.springframework.http.HttpStatus.NO_CONTENT : org.springframework.http.HttpStatus.OK);
     }
 }

@@ -2,6 +2,7 @@ package com.example.savemoney.repository;
 
 import com.example.savemoney.entity.Statement;
 import com.example.savemoney.entity.User;
+import com.example.savemoney.enumeration.StatementType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,4 +36,5 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
                                      @Param("now") LocalDateTime now);
 
 
+    List<Statement> findByUserAndStatementType(User user, StatementType statementType);
 }
