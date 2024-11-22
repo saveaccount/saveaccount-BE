@@ -1,5 +1,6 @@
 package com.example.savemoney.controller;
 
+import com.example.savemoney.dto.AccountDTO;
 import com.example.savemoney.dto.AccountEnrollDTO;
 import com.example.savemoney.dto.TransferRequestDTO;
 import com.example.savemoney.dto.TransferResponseDTO;
@@ -49,12 +50,13 @@ public class AccountController {
 
     //유저의 모든 계좌 정보 조회
     @GetMapping("")
-    public ResponseEntity<?> getUserAccounts(){
+    public ResponseEntity<?> getUserAccounts() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Account> accounts = accountService.getUserAccounts(username);
+        List<AccountDTO> accounts = accountService.getUserAccounts(username);
 
-        if(accounts.isEmpty()){
-            return new ResponseEntity<>("계좌 정보가 존재하지 않습니다", HttpStatus.NOT_FOUND);}
+        if (accounts.isEmpty()) {
+            return new ResponseEntity<>("계좌 정보가 존재하지 않습니다", HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
