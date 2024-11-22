@@ -42,7 +42,9 @@ steps:
     javaHome: '/usr/lib/jvm/java-17-openjdk-amd64'
     publishJUnitResults: true
     testResultsFiles: '**/build/test-results/**/*.xml'
-    
+  env:
+    JAVA_HOME: '/usr/lib/jvm/java-17-openjdk-amd64'
+    PATH: '/usr/lib/jvm/java-17-openjdk-amd64/bin:$(PATH)'   
 # - task: Gradle@3
 #   inputs:
 #     gradleWrapperFile: 'gradlew'       # Gradle wrapper 파일 경로
