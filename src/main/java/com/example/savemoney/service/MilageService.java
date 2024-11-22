@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -107,5 +108,48 @@ public class MilageService {
         }
         int milage = milageRepository.getMilage(user);
         return milage;
+    }
+
+    public String ticketToSpin(int ticketCount) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username);
+        Milage milage = milageRepository.findByUser(user);
+
+        if (user == null) {
+            throw new IllegalArgumentException("존재하지 않는 사용자입니다");
+        }
+
+        // 100 * ticketCount 만큼 마일리지 차감
+        int requiredMilage = 100 * ticketCount;
+        if (milage.getBalance() < requiredMilage) {
+            throw new IllegalArgumentException("마일리지가 부족합니다.");
+        }
+
+        // 마일리지 차감
+        milage.updateBalance(-requiredMilage);
+        milageRepository.save(milage);
+
+        // 룰렛 돌리기
+        boolean isWinner = spinRoulette();
+
+        if (isWinner) {
+            // 당첨되면 기프티콘 코드 생성
+            String gifticonCode = generateGifticonCode();
+            return "축하합니다! 기프티콘 코드: " + gifticonCode;
+        } else {
+            return "꽝!, 당첨되지 않았습니다.";
+        }
+    }
+
+    // 룰렛 돌리기 (35% 확률로 당첨)
+    private boolean spinRoulette() {
+        Random random = new Random();
+        // 35% 확률로 당첨
+        return random.nextInt(100) < 35;
+    }
+
+    // 기프티콘 코드 생성
+    private String generateGifticonCode() {
+        return "GIFT-" + new Random().nextInt(100000);
     }
 }

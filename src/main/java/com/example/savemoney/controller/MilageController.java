@@ -30,4 +30,14 @@ public class MilageController {
 
         return new ResponseEntity<>(milage, HttpStatus.OK);
     }
+
+    @PostMapping("/spin")
+    public ResponseEntity<?> ticketToSpin(@RequestParam int ticketCount) {
+        try {
+            String result = milageService.ticketToSpin(ticketCount);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
