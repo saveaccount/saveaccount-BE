@@ -24,4 +24,15 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
                                              @Param("startDate") LocalDateTime startDate,
                                              @Param("endDate") LocalDateTime endDate);
 
+    @Query("SELECT s FROM Statement s WHERE s.senderAccount.account_num = :accountNum AND s.createdAt BETWEEN :startOfMonth AND :now")
+    List<Statement> findByAccountAndDateBetween(@Param("accountNum") String accountNum,
+                                                @Param("startOfMonth") LocalDateTime startOfMonth,
+                                                @Param("now") LocalDateTime now);
+
+    @Query("SELECT COALESCE(SUM(s.amount), 0) FROM Statement s WHERE s.senderAccount.user.id = :userId AND s.statementType = 0 AND s.createdAt BETWEEN :startOfMonth AND :now")
+    int calculateCurrentMonthExpense(@Param("userId") Long userId,
+                                     @Param("startOfMonth") LocalDateTime startOfMonth,
+                                     @Param("now") LocalDateTime now);
+
+
 }

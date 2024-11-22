@@ -1,5 +1,6 @@
 package com.example.savemoney.service;
 
+import com.example.savemoney.dto.StatementResponseDTO;
 import com.example.savemoney.entity.Statement;
 import com.example.savemoney.entity.User;
 import com.example.savemoney.enumeration.StatementType;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.IsoFields;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,60 @@ public class StatementService {
 
     private final StatementRepository statementRepository;
     private final UserRepository userRepository;
+
+    public int getCurrentMonthExpense(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime now = LocalDateTime.now();
+
+        return statementRepository.calculateCurrentMonthExpense(user.getId(), startOfMonth, now);
+    }
+    public List<StatementResponseDTO> getCurrentMonthStatementsByAccount(String accountNum) {
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime now = LocalDateTime.now();
+
+        List<Statement> statements = statementRepository.findByAccountAndDateBetween(accountNum, startOfMonth, now);
+
+        // Statement -> DTO 변환
+        return statements.stream()
+                .map(statement -> new StatementResponseDTO(
+                        statement.getId(),
+                        statement.getMemo(),
+                        statement.getStatementType().name(),
+                        statement.getExpenseType().name(),
+                        statement.getAmount(),
+                        statement.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    public List<StatementResponseDTO> getCurrentMonthStatements(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime now = LocalDateTime.now();
+
+        List<Statement> statements = statementRepository.findByUserAndDateBetween(user.getId(), startOfMonth, now);
+
+        // Statement -> DTO 변환
+        return statements.stream()
+                .map(statement -> new StatementResponseDTO(
+                        statement.getId(),
+                        statement.getMemo(),
+                        statement.getStatementType().name(),
+                        statement.getExpenseType().name(),
+                        statement.getAmount(),
+                        statement.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
+    }
 
     public Map<String, Integer> getCategorySpent(String username){
         User user = userRepository.findByUsername(username);
