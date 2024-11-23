@@ -20,7 +20,7 @@ public class Gifticon_relation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "username", referencedColumnName = "username")
+    @JoinColumn(name = "username")
     private User user;
 
     @ManyToOne
