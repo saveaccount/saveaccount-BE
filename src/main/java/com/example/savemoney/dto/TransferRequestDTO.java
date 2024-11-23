@@ -15,4 +15,5 @@ public class TransferRequestDTO {
     private String receiverAccountNum;;
     private String accountPassword;
     private ExpenseType category;
+    private String memo;
 }

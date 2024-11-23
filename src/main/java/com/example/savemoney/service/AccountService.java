@@ -156,7 +156,7 @@ public class AccountService {
 
         // 이체 내역 생성 및 저장
         Statement statement = Statement.builder()
-                .memo("이체내역메모")
+                .memo(transferRequestDTO.getMemo())
                 .statementType(StatementType.MONEY)
                 .expenseType(transferRequestDTO.getCategory())
                 .amount(transferRequestDTO.getAmount())
