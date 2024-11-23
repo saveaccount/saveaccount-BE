@@ -40,8 +40,8 @@ public class GifticonController {
     @PostMapping
     public ResponseEntity<?> spinRoulette(@RequestParam boolean isWin) {
         try {
-            var response = gifticonService.processRouletteResult(isWin);
-            return ResponseEntity.ok(response);
+            gifticonService.processRouletteResult(isWin);
+            return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
