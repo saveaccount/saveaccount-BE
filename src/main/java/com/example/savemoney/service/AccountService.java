@@ -79,9 +79,9 @@ public class AccountService {
             return false;
         }
         // 잔액이 0인지 확인
-        if (account.getBalance() != 0){
-            return false;
-        }
+//        if (account.getBalance() != 0){
+//            return false;
+//        }
         // 모임 계좌의 경우 호스트 여부 확인
         if(account.getType() == AccountType.GROUP && !isHost(user,account)){
             return false;
