@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Collections;
+import java.util.List;
 
 
 @Configuration
@@ -53,6 +54,7 @@ public class SecurityConfig {
                             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                                 CorsConfiguration corsConfiguration = new CorsConfiguration();
                                 corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+//                                corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:4000"));
                                 corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                                 corsConfiguration.setAllowCredentials(true);
                                 corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
