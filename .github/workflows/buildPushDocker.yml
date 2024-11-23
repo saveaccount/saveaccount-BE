@@ -1,8 +1,11 @@
 name: Build and Push Docker Image
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_run:
+    workflows:
+      - JUnitTest  # 1번 워크플로우 이름
+    types:
+      - completed  # 첫 번째 워크플로우가 완료되었을 때 실행
 
 permissions:
   contents: read
