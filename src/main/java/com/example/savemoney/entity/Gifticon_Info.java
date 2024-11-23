@@ -16,9 +16,6 @@ public class Gifticon_Info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
-    @Column(nullable = false)
-    private byte[] gifticonImage;
 
     @Column(nullable = false, unique = true)
     private String code;
@@ -27,8 +24,8 @@ public class Gifticon_Info {
     private String productName;
 
     @Builder
-    public Gifticon_Info(byte[] gifticonImage, String code, String productName) {
-        this.gifticonImage = gifticonImage;
+    public Gifticon_Info( String code, String productName) {
+
         this.code = code;
         this.productName = productName;
     }
