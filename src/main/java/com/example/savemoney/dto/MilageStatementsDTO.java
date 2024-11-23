@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class MilageStatementsDTO {
 
-    private String username;
+
     private int amount;
-    private StatementType statementType;
+    private String memoji;
     private LocalDateTime createdAt;
-    private String memo;
+
 }

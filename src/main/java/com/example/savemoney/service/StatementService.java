@@ -43,10 +43,8 @@ public class StatementService {
         // Statement -> DTO 변환
         return statements.stream()
                 .map(statement -> new StatementResponseDTO(
-                        statement.getId(),
-                        statement.getMemo(),
-                        statement.getStatementType().name(),
-                        statement.getExpenseType().name(),
+                        statement.getSenderAccount().getAccount_num(),
+                        statement.getReceiverAccount().getAccount_num(),
                         statement.getAmount(),
                         statement.getCreatedAt()
                 ))
@@ -67,10 +65,8 @@ public class StatementService {
         // Statement -> DTO 변환
         return statements.stream()
                 .map(statement -> new StatementResponseDTO(
-                        statement.getId(),
-                        statement.getMemo(),
-                        statement.getStatementType().name(),
-                        statement.getExpenseType().name(),
+                        statement.getSenderAccount().getAccount_num(),
+                        statement.getReceiverAccount().getAccount_num(),
                         statement.getAmount(),
                         statement.getCreatedAt()
                 ))
@@ -183,11 +179,10 @@ public class StatementService {
 
         milageStatements.stream().forEach(statement -> {
             milageDTOs.add(new MilageStatementsDTO(
-                    statement.getUser().getUsername(),
                     statement.getAmount(),
-                    statement.getStatementType(),
-                    statement.getCreatedAt(),
-                    statement.getMemo()
+                    statement.getMemo(),
+                    statement.getCreatedAt()
+
             ));
         });
 

@@ -25,7 +25,7 @@ public interface StatementRepository extends JpaRepository<Statement, Long> {
                                              @Param("startDate") LocalDateTime startDate,
                                              @Param("endDate") LocalDateTime endDate);
 
-    @Query("SELECT s FROM Statement s WHERE s.senderAccount.account_num = :accountNum AND s.createdAt BETWEEN :startOfMonth AND :now")
+    @Query("SELECT s FROM Statement s WHERE s.statementType = 0 AND s.senderAccount.account_num = :accountNum AND s.createdAt BETWEEN :startOfMonth AND :now")
     List<Statement> findByAccountAndDateBetween(@Param("accountNum") String accountNum,
                                                 @Param("startOfMonth") LocalDateTime startOfMonth,
                                                 @Param("now") LocalDateTime now);

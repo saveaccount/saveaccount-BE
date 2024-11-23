@@ -10,10 +10,8 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 public class StatementResponseDTO {
-    private Long id;
-    private String memo;
-    private String statementType;
-    private String expenseType;
+    private String sender_num;
+    private String receiver_num;
     private int amount;
     private LocalDateTime createdAt;
 }
