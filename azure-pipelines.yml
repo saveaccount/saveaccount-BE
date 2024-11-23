@@ -1,0 +1,79 @@
+
+
+# trigger:
+# - main
+
+# pool:
+#   vmImage: 'ubuntu-latest'
+
+# steps:
+# # Java 경로 설정
+# - script: |
+#     echo "Setting JAVA_HOME and PATH for Temurin Java 17..."
+#     export JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64
+#     export PATH=$JAVA_HOME/bin:$PATH
+#     java -version
+#   displayName: 'Set Java 17 Environment'
+
+# # JUnit 테스트 컴파일
+# - script: |
+#     echo "Compiling Java files..."
+#     javac -cp .:junit-platform-console-standalone-1.10.0.jar \
+#           -d ./out ./src/test/java/com/example/*.java
+#   displayName: 'Compile JUnit Tests'
+
+# # JUnit 테스트 실행
+# - script: |
+#     echo "Running JUnit tests..."
+#     java -jar junit-platform-console-standalone-1.10.0.jar \
+#          --class-path ./out \
+#          --scan-class-path
+#   displayName: 'Run JUnit Tests'
+
+# # 테스트 결과 업로드
+# - task: PublishTestResults@2
+#   inputs:
+#     testResultsFormat: 'JUnit'
+#     testResultsFiles: '**/TEST-*.xml'
+#     failTaskOnFailedTests: true
+#   displayName: 'Publish Test Results'
+
+
+
+# # trigger:
+# # - main
+
+# # pool:
+# #   vmImage: 'ubuntu-latest'
+
+  
+# # variables:
+# #   # Java 17 설정
+# #   JAVA_HOME: '/usr/lib/jvm/java-17-openjdk-amd64'
+
+# # steps:
+# # - task: UseJavaVersion@1
+# #   inputs:
+# #     version: '17'
+# #     architecture: 'x64'
+# #   displayName: 'Set up Java 17'
+
+# # - script: |
+# #     echo "Compiling Java files..."
+# #     javac -cp .:junit-platform-console-standalone-1.10.0.jar \
+# #           -d ./out ./src/test/java/com/example/*.java
+# #   displayName: 'Compile JUnit Tests'
+
+# # - script: |
+# #     echo "Running JUnit tests..."
+# #     java -jar junit-platform-console-standalone-1.10.0.jar \
+# #          --class-path ./out \
+# #          --scan-class-path
+# #   displayName: 'Run JUnit Tests'
+
+# # - task: PublishTestResults@2
+# #   inputs:
+# #     testResultsFormat: 'JUnit'
+# #     testResultsFiles: '**/TEST-*.xml'
+# #     failTaskOnFailedTests: true
+# #   displayName: 'Publish Test Results'
