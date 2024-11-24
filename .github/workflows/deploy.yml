@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  deploy_be:
     runs-on: self-hosted  # Linux 서버의 Runner에서 실행
     steps:
       # 1. Checkout Repository
